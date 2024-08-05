@@ -1,0 +1,71 @@
+# Ignore operating system and IDE files
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore compiled files
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+
+# Ignore virtual environment
+venv/
+env/
+*.env
+
+# Ignore package files
+*.whl
+*.tar.gz
+*.egg-info/
+
+# Ignore logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore project specific files and directories
+config.ini
+secrets.json
+/private/
+
+# Ignore generated files
+generated/
+
+# Ignore node_modules directory for Node.js projects
+node_modules/
+
+# Ignore compiled output for TypeScript
+# *.js
+
+# Ignore compiled output for Dart
+*.dart.js
+*.dart.js.map
+*.dart.snapshot
+/build/
+
+# Ignore package files for Ruby
+*.gem
+
+# Ignore artifacts for Java
+*.class
+
+# Ignore compiled output for C++
+*.out
+
+# Ignore build directories
+build/
+dist/
+out/
+
+# Ignore configuration files if needed
+config.yaml
+config.json
+
+# Ignore cache and temporary files
+.cache/
+*.swp
+*~
