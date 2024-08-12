@@ -1,23 +1,27 @@
-// Description: Main file for the forum API, setting up the server and database connection
+require('dotenv').config(); // Ensure environment variables are loaded
 
 const express = require("express");
 const cors = require('cors');
-const routes = require('./routes/forumRoutes');
+const routes = require('./routes/routes');
 const knex = require('knex');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Default to 3000 if not specified
 
 // Initialize Knex
 const pg = knex({
     client: 'pg',
-    version: '16', 
-    connection: process.env.PG_CONNECTION_STRING || 'postgres://admin:admin@localhost:5432/forumApi',
-    port: 5432
+    version: '16',
+    connection: {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME 
+    }
 });
 
 const server = express();
-server.use(cors()); 
-server.use(express.json()); 
+server.use(cors());
+server.use(express.json());
 
 server.use('/', routes(pg)); // Pass Knex instance to routes
 
@@ -26,10 +30,11 @@ server.listen(PORT, () => {
     initializeTables();
 });
 
-async function initializeTables() {
-    try {
-        const exists = await pg.schema.hasTable('questions');
+const retry = require('async-retry');
 
+async function initializeTables() {
+    await retry(async () => {
+        const exists = await pg.schema.hasTable('questions');
         if (!exists) {
             await pg.schema.createTable('questions', table => {
                 table.increments('id').primary();
@@ -44,9 +49,11 @@ async function initializeTables() {
         } else {
             console.log('Table questions already exists');
         }
-    } catch (error) {
-        console.error(error);
-    }
+    }, {
+        retries: 5, // Retry 5 times
+        minTimeout: 1000 // Wait 1 second between retries
+    });
 }
+
 
 module.exports = server;

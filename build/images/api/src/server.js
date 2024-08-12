@@ -1,9 +1,11 @@
-const app = require('./index.js');
+const app = require('./index.js'); // Import the app from index.js
 
-app.listen(3000, (err) => {
-    if (!err) {
-        console.log("Running on port 3000");
+const PORT = process.env.PORT || 3000; // Use environment variable or default to 3000
+
+app.listen(PORT, (err) => {
+    if (err) {
+        console.error(`Error starting server: ${err}`);
     } else {
-        console.error(err);
+        console.log(`Server running on port ${PORT}`);
     }
 });
