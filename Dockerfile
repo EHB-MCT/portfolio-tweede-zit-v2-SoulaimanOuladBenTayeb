@@ -5,13 +5,16 @@ FROM node:16-alpine
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json to the container
-COPY package*.json ./
+COPY build/images/api/package*.json ./
 
 # Install dependencies
 RUN npm install --quiet
 
 # Copy the rest of the application code to the container
-COPY . .
+COPY build/images/api/ .
+
+# Copy the frontend files into the container
+COPY build/images/frontend /usr/src/app/frontend
 
 # Expose the port the app runs on
 EXPOSE 3000

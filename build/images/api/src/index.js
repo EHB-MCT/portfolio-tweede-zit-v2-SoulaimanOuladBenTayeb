@@ -1,16 +1,15 @@
-require('dotenv').config(); // Ensure environment variables are loaded
-
+require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
-const routes = require('./routes/routes');
+const configureRoutes = require('./routes/routes');
 const knex = require('knex');
+const retry = require('async-retry');
+const path = require('path');
 
-const PORT = process.env.PORT || 3000; // Default to 3000 if not specified
+const PORT = process.env.PORT || 3000;
 
-// Initialize Knex
 const pg = knex({
     client: 'pg',
-    version: '16',
     connection: {
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
@@ -19,18 +18,25 @@ const pg = knex({
     }
 });
 
-const server = express();
-server.use(cors());
-server.use(express.json());
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-server.use('/', routes(pg)); // Pass Knex instance to routes
+// Serve static files from the 'frontend' directory
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-server.listen(PORT, () => {
+// Serve the index.html file for the root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+// Configure and use API routes
+app.use('/api', configureRoutes(pg));
+
+app.listen(PORT, () => {
     console.log(`Server listening at ${PORT}`);
     initializeTables();
 });
-
-const retry = require('async-retry');
 
 async function initializeTables() {
     await retry(async () => {
@@ -50,10 +56,15 @@ async function initializeTables() {
             console.log('Table questions already exists');
         }
     }, {
-        retries: 5, // Retry 5 times
-        minTimeout: 1000 // Wait 1 second between retries
+        retries: 5,
+        minTimeout: 1000
     });
 }
 
+// After all route definitions
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
-module.exports = server;
+module.exports = app;
