@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions Forum</title>
+    <link rel="stylesheet" href="./assets/styles.css"> <!-- Link to the external CSS file -->
+    
+
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div id="threejs-container" style="width: 100vw; height: 100vh;"></div>
+    </div>
+    
+
+    <div id="main-content" class="hidden">
+        <div class="navbar">
+            <a href="#" id="show-register">Register</a>
+            <a href="#" id="show-login">Login</a>
+        </div>
+
+        <div class="container">
+            <!-- Register Form - Initially hidden -->
+            <section id="register-section" class="hidden">
+                <h2>Register</h2>
+                <form id="register-form">
+                    <label for="name">First Name:</label>
+                    <input type="text" id="name" name="name" required><br><br>
+
+                    <label for="lastname">Last Name:</label>
+                    <input type="text" id="lastname" name="lastname" required><br><br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required><br><br>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required><br><br>
+
+                    <label for="role">Role:</label>
+                    <select id="role" name="role" required>
+                        <option value="teacher">Teacher</option>
+                        <option value="student">Student</option>
+                    </select><br><br>
+
+                    <button type="submit">Register</button>
+                </form>
+            </section>
+
+            <!-- Login Form - Initially hidden -->
+            <section id="login-section" class="hidden">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" name="email" required><br><br>
+
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="password" required><br><br>
+
+                    <button type="submit">Login</button>
+                </form>
+            </section>
+
+            <section id="question-section">
+                <div id="greeting"></div>
+                
+                <h2>Ask a Question</h2>
+                <form id="question-form">
+                    <label for="question-text">Your Question:</label>
+                    <input type="text" id="question-text" name="question-text" required>
+                    <button type="submit">Submit Question</button>
+                </form>
+            </section>
+
+            <h1>Questions Forum</h1>
+            <div id="questions-container">
+                <!-- Questions will be rendered here -->
+            </div>
+            <div id="answers-container" class="hidden">
+                <!-- Answers will be rendered here -->
+            </div>
+
+                        <!-- Edit Answer Modal -->
+            <div id="editAnswerModal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close" id="closeAnswerModal">&times;</span>
+                    <h2>Edit your answer</h2>
+                    <textarea id="editAnswerInput"></textarea>
+                    <button id="saveEditAnswerBtn">Save</button>
+                </div>
+            </div>
+
+            <!-- Delete Answer Modal -->
+            <div id="deleteAnswerModal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close" id="closeDeleteAnswerModal">&times;</span>
+                    <h2>Are you sure you want to delete this answer?</h2>
+                    <button id="confirmDeleteAnswerBtn">Yes, Delete</button>
+                    <button id="cancelDeleteAnswerBtn">Cancel</button>
+                </div>
+            </div>
+
+
+                    <!-- Edit Question Modal -->
+            <div id="editQuestionModal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close" id="closeModal">&times;</span> <!-- Corrected id -->
+                    <h2>Edit your question</h2>
+                    <textarea id="editQuestionInput"></textarea>
+                    <button id="saveEditBtn">Save</button>
+                </div>
+            </div>
+
+            <!-- Delete Question Modal -->
+            <div id="deleteQuestionModal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close" id="closeDeleteQuestionModal">&times;</span>
+                    <h2>Are you sure you want to delete this question?</h2>
+                    <button id="confirmDeleteQuestionBtn">Yes, Delete</button>
+                    <button id="cancelDeleteQuestionBtn" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <!-- Logout Button -->
+            <button id="logout-btn" class="hidden">Logout</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Link to the external JavaScript file -->
+    <script src="./js/scripts.js"></script>
+
+    <script src="./js/threeLoading.js"></script>
+    
+
+</body>
+</html>

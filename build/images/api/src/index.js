@@ -1,12 +1,22 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
-const configureRoutes = require('./routes/routes');
+const configureRoutes = require('./routes/routes');  // Existing routes
+const configureAuthRoutes = require('./routes/authRoutes');  // New auth routes
 const knex = require('knex');
 const retry = require('async-retry');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
+
+// Add error handling for unhandled rejections and uncaught exceptions
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', error => {
+    console.error('Uncaught Exception:', error);
+});
 
 const pg = knex({
     client: 'pg',
@@ -32,6 +42,7 @@ app.get('/', (req, res) => {
 
 // Configure and use API routes
 app.use('/api', configureRoutes(pg));
+app.use('/auth', configureAuthRoutes(pg));  // Use the new auth routes
 
 app.listen(PORT, () => {
     console.log(`Server listening at ${PORT}`);
@@ -40,26 +51,59 @@ app.listen(PORT, () => {
 
 async function initializeTables() {
     await retry(async () => {
-        const exists = await pg.schema.hasTable('questions');
-        if (!exists) {
+        const existsQuestions = await pg.schema.hasTable('questions');
+        if (!existsQuestions) {
             await pg.schema.createTable('questions', table => {
                 table.increments('id').primary();
-                table.string('studentName');
-                table.text('question');
-                table.string('questionDate');
-                table.text('answer').nullable();
-                table.string('answerDate').nullable();
-                table.string('teacherName').nullable();
+                table.string('name').notNullable();
+                table.string('role').notNullable();
+                table.text('question').notNullable();
+                table.string('questionDate').notNullable();
+                table.integer('userId').notNullable();  // New column for userId
             });
             console.log('Table questions created');
         } else {
             console.log('Table questions already exists');
+        }
+
+        const existsAnswers = await pg.schema.hasTable('answers');
+        if (!existsAnswers) {
+            await pg.schema.createTable('answers', table => {
+                table.increments('id').primary();
+                table.integer('questionId').references('id').inTable('questions').onDelete('CASCADE');
+                table.string('name').notNullable();
+                table.string('role').notNullable();
+                table.text('answer').notNullable();
+                table.string('answerDate').notNullable();
+                table.integer('userId').notNullable();
+            });
+            console.log('Table answers created');
+        } else {
+            console.log('Table answers already exists');
+        }
+
+        const usersTableExists = await pg.schema.hasTable('users');
+        if (!usersTableExists) {
+            await pg.schema.createTable('users', table => {
+                table.increments('id').primary();
+                table.string('name').notNullable();
+                table.string('lastname').notNullable();
+                table.string('email').notNullable().unique();
+                table.string('password').notNullable();
+                table.enum('role', ['teacher', 'student']).notNullable();
+            });
+            console.log('Table users created');
+        } else {
+            console.log('Table users already exists');
         }
     }, {
         retries: 5,
         minTimeout: 1000
     });
 }
+
+
+
 
 // After all route definitions
 app.use((err, req, res, next) => {

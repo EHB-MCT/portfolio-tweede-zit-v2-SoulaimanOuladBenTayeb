@@ -3,7 +3,7 @@ version: '3.8'
 services:
   api:
     build:
-      context: .  # Updated context to the location of the Dockerfile
+      context: .  # The location of the Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -11,6 +11,9 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET}  # Ensure this environment variable is passed
+    env_file:  # Load other environment variables from the .env file
+      - .env
     networks:
       - api_forum-network
     depends_on:

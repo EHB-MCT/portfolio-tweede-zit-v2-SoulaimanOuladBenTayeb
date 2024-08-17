@@ -45,7 +45,6 @@ node_modules/
 *.dart.js
 *.dart.js.map
 *.dart.snapshot
-/build/
 
 # Ignore package files for Ruby
 *.gem
@@ -57,7 +56,6 @@ node_modules/
 *.out
 
 # Ignore build directories
-build/
 dist/
 out/
 
