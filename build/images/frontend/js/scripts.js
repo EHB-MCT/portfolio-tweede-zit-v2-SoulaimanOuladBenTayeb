@@ -45,7 +45,7 @@ async function fetchQuestions() {
     try {
         const response = await fetch('http://localhost:3000/api/questions');
         let questions = await response.json();
-        console.log(questions);
+        // console.log(questions);
 
         // Sort questions by date (latest first)
         questions = questions.sort((a, b) => new Date(b.questionDate) - new Date(a.questionDate));
@@ -64,7 +64,7 @@ let currentQuestionText = null;
 let currentQuestionDate = null;
 
 async function openAnswers(questionId, name, role, questionText, questionDate) {
-    console.log({ questionId, name, role, questionText, questionDate });
+    // console.log({ questionId, name, role, questionText, questionDate });
 
     currentQuestionId = questionId;
     currentQuestionName = name;
@@ -486,7 +486,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
 
     const formData = { name, lastname, email, password, role };
 
-    console.log("Register form data:", formData);
+    // console.log("Register form data:", formData);
 
     try {
         const response = await fetch('http://localhost:3000/auth/register', {
@@ -530,7 +530,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
         if (result.success) {
             // Store the token without "Bearer" prefix
             localStorage.setItem('token', result.token);
-            console.log("Token stored:", localStorage.getItem('token'));
+            // console.log("Token stored:", localStorage.getItem('token'));
 
             // Decode the token to get user info
             const payload = JSON.parse(atob(result.token.split('.')[1]));
@@ -560,7 +560,7 @@ async function askQuestion(questionText) {
         return;
     }
 
-    console.log("Token used to ask question:", token);
+    // console.log("Token used to ask question:", token);
 
     const response = await fetch('http://localhost:3000/api/questions', {
         method: 'POST',
@@ -584,7 +584,7 @@ async function askQuestion(questionText) {
         }
     } else {
         const result = await response.json();
-        console.log('Question asked:', result);
+        // console.log('Question asked:', result);
         fetchQuestions();
     }
 }

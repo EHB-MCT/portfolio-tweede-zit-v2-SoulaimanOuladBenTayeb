@@ -1,15 +1,15 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
-const configureRoutes = require('./routes/routes');  // Existing routes
-const configureAuthRoutes = require('./routes/authRoutes');  // New auth routes
+const configureRoutes = require('./routes/routes');  // Importing API routes
+const configureAuthRoutes = require('./routes/authRoutes');  // Importing authentication routes
 const knex = require('knex');
 const retry = require('async-retry');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 
-// Add error handling for unhandled rejections and uncaught exceptions
+// Global error handling for unhandled rejections and uncaught exceptions
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
@@ -18,6 +18,7 @@ process.on('uncaughtException', error => {
     console.error('Uncaught Exception:', error);
 });
 
+// Initialize knex with PostgreSQL configuration
 const pg = knex({
     client: 'pg',
     connection: {
@@ -29,8 +30,8 @@ const pg = knex({
 });
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors());  // Enable Cross-Origin Resource Sharing
+app.use(express.json());  // Enable JSON body parsing for incoming requests
 
 // Serve static files from the 'frontend' directory
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -40,15 +41,20 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// Configure and use API routes
-app.use('/api', configureRoutes(pg));
-app.use('/auth', configureAuthRoutes(pg));  // Use the new auth routes
+// Configure and use API routes and authentication routes
+app.use('/api', configureRoutes(pg));  // API routes
+app.use('/auth', configureAuthRoutes(pg));  // Authentication routes
 
+// Start the server and initialize the database tables
 app.listen(PORT, () => {
     console.log(`Server listening at ${PORT}`);
     initializeTables();
 });
 
+/**
+ * Function to initialize database tables if they don't already exist.
+ * Uses async-retry to attempt the initialization multiple times in case of failure.
+ */
 async function initializeTables() {
     await retry(async () => {
         const existsQuestions = await pg.schema.hasTable('questions');
@@ -97,15 +103,12 @@ async function initializeTables() {
             console.log('Table users already exists');
         }
     }, {
-        retries: 5,
-        minTimeout: 1000
+        retries: 5,  // Number of retry attempts
+        minTimeout: 1000  // Minimum timeout between retries (in milliseconds)
     });
 }
 
-
-
-
-// After all route definitions
+// Error handling middleware for catching all errors
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');

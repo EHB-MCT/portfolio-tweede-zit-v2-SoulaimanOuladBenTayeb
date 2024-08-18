@@ -4,13 +4,13 @@ const authenticateToken = require('../authMiddleware');
 function configureRoutes(knex) {
     const router = express.Router();
 
-    // Middleware to inject knex into the request
+    // Middleware to inject knex into the request object
     router.use((req, res, next) => {
         req.knex = knex;
         next();
     });
 
-    // Get all questions
+    // GET all questions
     router.get('/questions', async (req, res) => {
         try {
             const questions = await req.knex('questions').select();
@@ -21,7 +21,7 @@ function configureRoutes(knex) {
         }
     });
 
-    // Post a new question (protected route)
+    // POST a new question (protected route)
     router.post('/questions', authenticateToken, async (req, res) => {
         const { question, questionDate } = req.body;
         const name = req.user.name;
@@ -29,13 +29,14 @@ function configureRoutes(knex) {
         const userId = req.user.userId;  // Get the userId from the token
         
         try {
+            // Insert the new question into the 'questions' table
             const [newQuestion] = await req.knex('questions')
                 .insert({
                     name,
                     role,
                     question,
                     questionDate,
-                    userId  // Insert userId in the questions table
+                    userId  // Associate the question with the user who created it
                 })
                 .returning('*');
     
@@ -46,13 +47,14 @@ function configureRoutes(knex) {
         }
     });
 
-    // Edit a question (protected route)
+    // PUT to edit a question (protected route)
     router.put('/questions/:id', authenticateToken, async (req, res) => {
         const { id } = req.params;
         const { question } = req.body;
         const userId = req.user.userId;
 
         try {
+            // Check if the question exists and belongs to the logged-in user
             const existingQuestion = await req.knex('questions').where({ id }).first();
             if (existingQuestion.userId !== userId) {
                 return res.status(403).json({ error: "You can only edit your own questions" });
@@ -60,9 +62,7 @@ function configureRoutes(knex) {
 
             const updated = await req.knex('questions')
                 .where({ id })
-                .update({
-                    question
-                });
+                .update({ question });
 
             if (updated) {
                 res.json({ success: true });
@@ -75,12 +75,13 @@ function configureRoutes(knex) {
         }
     });
 
-    // Delete a question (protected route)
+    // DELETE a question (protected route)
     router.delete('/questions/:id', authenticateToken, async (req, res) => {
         const { id } = req.params;
         const userId = req.user.userId;
 
         try {
+            // Check if the question exists and belongs to the logged-in user
             const existingQuestion = await req.knex('questions').where({ id }).first();
             if (existingQuestion.userId !== userId) {
                 return res.status(403).json({ error: "You can only delete your own questions" });
@@ -99,7 +100,7 @@ function configureRoutes(knex) {
         }
     });
 
-    // Get all answers for a specific question
+    // GET all answers for a specific question
     router.get('/questions/:id/answers', async (req, res) => {
         const { id } = req.params;
         try {
@@ -111,16 +112,16 @@ function configureRoutes(knex) {
         }
     });
 
-
-    // Post a new answer (protected route)
+    // POST a new answer (protected route)
     router.post('/questions/:id/answers', authenticateToken, async (req, res) => {
         const { id } = req.params;
         const { answer, answerDate } = req.body;
         const name = req.user.name;
         const role = req.user.role;
-        const userId = req.user.userId;  // Get the userId from the token
+        const userId = req.user.userId;
     
         try {
+            // Insert the new answer into the 'answers' table
             const [newAnswer] = await req.knex('answers')
                 .insert({
                     questionId: id,
@@ -137,15 +138,15 @@ function configureRoutes(knex) {
             console.error(err);
             res.status(500).json({ error: "Failed to post answer" });
         }
-
     });
 
-        // Delete an answer (protected route)
+    // DELETE an answer (protected route)
     router.delete('/answers/:id', authenticateToken, async (req, res) => {
         const { id } = req.params;
         const userId = req.user.userId;
 
         try {
+            // Check if the answer exists and belongs to the logged-in user
             const existingAnswer = await req.knex('answers').where({ id }).first();
             if (!existingAnswer) {
                 return res.status(404).json({ error: "Answer not found" });
@@ -167,13 +168,14 @@ function configureRoutes(knex) {
         }
     });
 
-        // Edit an answer (protected route)
+    // PUT to edit an answer (protected route)
     router.put('/answers/:id', authenticateToken, async (req, res) => {
         const { id } = req.params;
         const { answer } = req.body;
         const userId = req.user.userId;
 
         try {
+            // Check if the answer exists and belongs to the logged-in user
             const existingAnswer = await req.knex('answers').where({ id }).first();
             if (!existingAnswer) {
                 return res.status(404).json({ error: "Answer not found" });
@@ -184,9 +186,7 @@ function configureRoutes(knex) {
 
             const updated = await req.knex('answers')
                 .where({ id })
-                .update({
-                    answer
-                });
+                .update({ answer });
 
             if (updated) {
                 res.json({ success: true });
@@ -198,8 +198,6 @@ function configureRoutes(knex) {
             res.status(500).json({ error: "Failed to edit answer" });
         }
     });
-
-
 
     return router;
 }
