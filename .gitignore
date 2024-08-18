@@ -13,6 +13,7 @@ __pycache__/
 venv/
 env/
 *.env
+.env.test
 
 # Ignore package files
 *.whl
@@ -45,7 +46,6 @@ node_modules/
 *.dart.js
 *.dart.js.map
 *.dart.snapshot
-/build/
 
 # Ignore package files for Ruby
 *.gem
@@ -57,7 +57,6 @@ node_modules/
 *.out
 
 # Ignore build directories
-build/
 dist/
 out/
 

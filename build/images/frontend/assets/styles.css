@@ -1,0 +1,478 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 14px 20px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #575757;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #575757;
+}
+
+/* Greeting Styles */
+#greeting {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #007BFF;
+}
+
+/* Question Form Styles */
+#question-form {
+    margin-bottom: 30px;
+}
+
+#question-form input[type="text"] {
+    width: calc(100% - 120px);
+    margin-right: 10px;
+    display: inline-block;
+}
+
+#question-form button {
+    width: 100px;
+    display: inline-block;
+}
+
+#questions-container {
+    margin-top: 20px;
+}
+
+
+.question {
+    background-color: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border-left: 5px solid #007BFF;
+    position: relative;
+}
+
+.question h2 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #007BFF;
+}
+
+.question p {
+    margin-bottom: 5px;
+}
+
+.question p strong {
+    color: #333;
+}
+
+/* Question Actions */
+.question-actions {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.icon {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.pencil-icon:hover,
+.bin-icon:hover {
+    color: #007BFF;
+}
+
+/* Logout Button */
+#logout-btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#logout-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Hidden Sections */
+.hidden {
+    display: none;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    background-color: #333;
+}
+
+.custom-alert-success {
+    background-color: #28a745;
+}
+
+.custom-alert-error {
+    background-color: #dc3545;
+}
+
+.custom-alert span {
+    margin-right: 10px;
+}
+
+.custom-alert button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 8px;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Modal Buttons */
+#saveEditBtn {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#saveEditBtn:hover {
+    background-color: #0056b3;
+}
+
+#editQuestionInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+/* Delete Modal Buttons */
+#confirmDeleteBtn {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#confirmDeleteBtn:hover {
+    background-color: #b52a37;
+}
+
+#cancelDeleteBtn {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#cancelDeleteBtn:hover {
+    background-color: #5a6268;
+}
+
+
+/* Answer Input Styles */
+.answer-input {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.answer-input textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.answer-submit-btn {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.answer-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Answer Styles */
+.answer {
+    background-color: #e0f7ff;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-left: 5px solid #007BFF;
+    position: relative;
+}
+
+.answer-actions {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.icon {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Chat Icon Position Adjustment */
+.chat-icon {
+    font-size: 20px;
+    cursor: pointer;/*
+    position: absolute;*/
+    bottom: 20px; /* Lowered the icon */
+    left: 10px;
+    color: #007BFF;
+}
+
+.chat-icon:hover {
+    color: #0056b3;
+}
+
+.date-time {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #666;
+    font-size: 12px; /* Smaller font size */
+}
+
+.date-time:nth-child(1) {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #666;
+    font-size: 12px; /* Smaller font size */
+}
+
+/* Hide the Date in the Top Right Corner */
+#greeting + .date-time {
+    display: none;
+}
+
+.go-back {
+    font-size: 18px;
+    cursor: pointer;
+    color: #007BFF;
+    margin-bottom: 20px;
+}
+
+.go-back:hover {
+    color: #0056b3;
+}
+
+/* Styles for the confirmation modal */
+.modal-content {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+}
+
+.modal-content h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-content button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: #0056b3;
+}
+
+.modal-content .cancel-btn {
+    background-color: #6c757d;
+}
+
+.modal-content .cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    color: #333;
+    cursor: pointer;
+}
+
+/* styles.css */
+
+/* Loading Screen Styles */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* Background color */
+    z-index: 1000; /* Ensure it overlays the entire page */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#threejs-container {
+    width: 200px; /* Size of the Three.js canvas */
+    height: 200px;
+}
+
+.hidden {
+    display: none;
+}

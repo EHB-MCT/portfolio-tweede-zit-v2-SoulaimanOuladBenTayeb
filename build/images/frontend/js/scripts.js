@@ -72,6 +72,7 @@ async function openAnswers(questionId, name, role, questionText, questionDate) {
     currentQuestionText = questionText;
     currentQuestionDate = questionDate;
 
+
     const loggedInUserId = getLoggedInUserId(); 
 
     if (!questionId) {
@@ -266,7 +267,6 @@ async function saveEditedAnswer() {
 
     if (newAnswer.trim() !== "" && currentEditAnswerId !== null) {
         try {
-            
             const response = await fetch(`http://localhost:3000/api/answers/${currentEditAnswerId}`, {
                 method: 'PUT',
                 headers: {
