@@ -72,7 +72,8 @@ async function openAnswers(questionId, name, role, questionText, questionDate) {
     currentQuestionText = questionText;
     currentQuestionDate = questionDate;
 
-    const loggedInUserId = getLoggedInUserId(); // Define loggedInUserId here
+
+    const loggedInUserId = getLoggedInUserId(); 
 
     if (!questionId) {
         console.error('Invalid question ID:', questionId);
@@ -266,7 +267,6 @@ async function saveEditedAnswer() {
 
     if (newAnswer.trim() !== "" && currentEditAnswerId !== null) {
         try {
-            // Correct the URL by removing the extra /api prefix
             const response = await fetch(`http://localhost:3000/api/answers/${currentEditAnswerId}`, {
                 method: 'PUT',
                 headers: {

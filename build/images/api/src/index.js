@@ -19,6 +19,7 @@ process.on('uncaughtException', error => {
 });
 
 // Initialize knex with PostgreSQL configuration
+
 const pg = knex({
     client: 'pg',
     connection: {
@@ -41,9 +42,19 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
+
 // Configure and use API routes and authentication routes
 app.use('/api', configureRoutes(pg));  // API routes
 app.use('/auth', configureAuthRoutes(pg));  // Authentication routes
+
+
+// Configure and use API routes
+app.use('/api', configureRoutes(pg));
+
+// Configure and use API routes and authentication routes
+app.use('/api', configureRoutes(pg));  // API routes
+app.use('/auth', configureAuthRoutes(pg));  // Authentication routes
+
 
 // Start the server and initialize the database tables
 app.listen(PORT, () => {
@@ -108,6 +119,8 @@ async function initializeTables() {
     });
 }
 
+
+// After all route definitions
 // Error handling middleware for catching all errors
 app.use((err, req, res, next) => {
     console.error(err.stack);
