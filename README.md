@@ -47,6 +47,7 @@ To set up the environment variables, follow these steps:
 1. **Copy `.env.example` to `.env` and `.env.example.test` to `.env.test` :**
    ```bash
    cp .env.example .env
+   cp .env.example.test .env.test
    ```
 2. **Edit `.env` and `.env.test` with your specific environment settings:**
    - `DB_HOST`: Your database host (e.g., `localhost`)
