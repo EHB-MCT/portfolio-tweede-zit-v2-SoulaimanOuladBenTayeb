@@ -59,6 +59,7 @@ To set up the environment variables, follow these steps:
 
 ### Running the Application
 - **Before you start the application, make sure to open docker first**
+  
 To start the application, run:
 ```bash
 docker-compose up --build
